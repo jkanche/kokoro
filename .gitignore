@@ -15,4 +15,3 @@ tasks/*.json
 
 backup
 neo4j-data*
-scripts/ontologies/*
