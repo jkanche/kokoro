@@ -1,9 +1,5 @@
 module.exports = {
   Query: {
-    searchDSDB: (_, { query }, { dataSources }) => {
-      return dataSources.DsdbAPI.searchDSDB({ query: query });
-    },
-
     searchExperiments: async (
       _,
       {
