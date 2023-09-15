@@ -1,0 +1,7 @@
+celery==5.3.4
+requests
+ujson
+pandas
+numpy
+flower
+neo4j

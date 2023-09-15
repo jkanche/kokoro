@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@neo4j/graphql": "^2.0.0",
+    "apollo-datasource-rest": "^3.2.0",
+    "apollo-server": "^2.25.2",
+    "graphql": "^15.5.1",
+    "neo4j-driver": "^4.3.2",
+    "@neo4j/graphql-ogm": "^2.4.0"
+  },
+  "name": "Ontology API",
+  "version": "1.0.0",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
