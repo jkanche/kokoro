@@ -8,7 +8,6 @@ neo4j-data/*
 *.RData
 *.Rhistory
 *.Rproj
-*.ipynb
 package-lock.json
 
 tasks/*.json
