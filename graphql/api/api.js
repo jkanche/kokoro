@@ -15,9 +15,6 @@ const neoSchema = new Neo4jGraphQL({ typeDefs, resolvers, driver });
 
 const server = new ApolloServer({
     schema: neoSchema.schema,
-    playground: {
-        endpoint: "https://vida.science.roche.com/schubsearch/",
-    },
     dataSources: () => {
         return {
             DsdbAPI: new DsdbAPI(),
