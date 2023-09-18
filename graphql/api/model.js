@@ -212,7 +212,7 @@ const typeDefs = gql`
     totalcellmetrics: [Metric] @cypher(
         statement: """
             MATCH (e:Experiment)
-            RETURN {id: 'total_cells', name: 'total_cells', count: sum(e.total_cells)}
+            RETURN {id: 'total_cells', name: 'total_cells', count: sum(e.number_of_cells)}
         """
       )
 
