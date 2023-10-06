@@ -60,12 +60,17 @@ class SearchDB extends DataSource {
   async queryTypes(input, key) {
     let sources = this.datasources[key];
 
+    let rfilter = 'child>|links>';
+    if (key === "organism") {
+      rfilter = 'links>';
+    }
+
     let query = `
             MATCH (o:OntoTerm)
             where o.id in [${input}] OR 
             any(name in [${input}] WHERE o.name contains name)
             CALL apoc.path.subgraphNodes(o, {
-                    relationshipFilter: 'child>|links>',
+                    relationshipFilter: '${rfilter}',
                     labelFilter: '/Experiment'
                 })
             YIELD node
@@ -85,9 +90,7 @@ class SearchDB extends DataSource {
       input = input.toLowerCase();
     }
 
-    console.log("before input", input);
     input = input.replace(/'/g, "\\'");
-    console.log("after input", input);
 
     let query = `
                 MATCH (e:Experiment)
@@ -96,7 +99,7 @@ class SearchDB extends DataSource {
                 OR toLower(e.description) ${op} '${input}'
                 OR toLower(e.id) ${op} '${input}'
                 or toLower(e.keywords) ${op} '${input}'
-                RETURN distinct d.id as id;
+                RETURN distinct e.id as id;
             `;
 
     return await this.sendQuery(query);

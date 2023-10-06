@@ -69,6 +69,10 @@ const typeDefs = gql`
 
   type Source {
     id: String
+    description: String
+    url: String
+    title: String
+    experiments: [Experiment] @relationship(type: "source", direction: IN)
   }
 
   type OntoNamespace {
@@ -95,11 +99,11 @@ const typeDefs = gql`
     marker_detection: String
     library_preparation: String
     total_celltypes: Int @cypher(
-        statement: """
-            MATCH (this)<-[r:celltype]->()
-            RETURN distinct count(r) as total_celltypes;
-        """
-      )
+      statement: """
+          MATCH (this)<-[:celltype]->(o:OntoTerm)
+          RETURN count(distinct(o.name)) as total_celltypes;
+      """
+    )
     celltypes: [OntoTerm] @relationship(type: "celltype", direction: OUT)
     tissues: [OntoTerm] @relationship(type: "tissue", direction: OUT)
     diseases: [OntoTerm] @relationship(type: "disease", direction: OUT)
