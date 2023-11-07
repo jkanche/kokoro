@@ -41,7 +41,7 @@ const typeDefs = gql`
     ancestors(limit: Int = 10, offset: Int = 0): [OntoTerm] @cypher(
         statement: """
             MATCH (this)
-            CALL apoc.path.subgraphNodes(o, {
+            CALL apoc.path.subgraphNodes(this, {
                     relationshipFilter: 'parent>',
                     labelFilter: '>OntoTerm'
                 })
@@ -52,7 +52,7 @@ const typeDefs = gql`
     descendants(limit: Int = 10, offset: Int = 0): [OntoTerm] @cypher(
         statement: """
             MATCH (this)
-            CALL apoc.path.subgraphNodes(o, {
+            CALL apoc.path.subgraphNodes(this, {
                     relationshipFilter: 'child>',
                     labelFilter: '>OntoTerm'
                 })
