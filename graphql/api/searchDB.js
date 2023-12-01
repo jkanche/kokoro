@@ -13,7 +13,8 @@ class SearchDB extends DataSource {
     );
 
     this.ogm = new OGM({ typeDefs, driver: this.driver });
-    this.Dataset = this.ogm.model("Experiment");
+    this.Experiment = this.ogm.model("Experiment");
+    this.Dataset = this.ogm.model("Dataset")
 
     this.selectionSet = `
             {
@@ -43,10 +44,26 @@ class SearchDB extends DataSource {
                 assay_types
                 experiments
                 sequencing
+                parent_dataset {
+                  id
+                  title
+                  number_of_cells
+                  uploaded
+                  number_of_experiments
+                }
             }
         `;
 
-    this.Dataset.setSelectionSet(this.selectionSet);
+    this.Experiment.setSelectionSet(this.selectionSet);
+    this.Dataset.setSelectionSet(`
+      {
+        id
+        title
+        number_of_cells
+        uploaded
+        number_of_experiments
+      }
+    `)
 
     this.datasources = {
       celltypes: ["Cell Ontology"],
@@ -124,7 +141,7 @@ class SearchDB extends DataSource {
     return result_ids;
   }
 
-  async searchExperiments({
+  async getMatches(
     celltypes,
     diseases,
     tissues,
@@ -135,11 +152,9 @@ class SearchDB extends DataSource {
     organismOperation = "OR",
     query,
     queryOperation = "OR",
-  }) {
+  ) {
     // ignore node ssl check
     process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-
-    console.log("calling here");
 
     let data_ids = [];
 
@@ -212,7 +227,33 @@ class SearchDB extends DataSource {
     // make ids unique
     data_ids = [...new Set(data_ids)];
 
-    const ds = await this.Dataset.find({
+    return data_ids
+  }
+
+  async searchExperiments({
+    celltypes,
+    diseases,
+    tissues,
+    organisms,
+    cellTypeOperation = "OR",
+    diseaseOperation = "OR",
+    tissueOperation = "OR",
+    organismOperation = "OR",
+    query,
+    queryOperation = "OR",
+  }) {
+    let data_ids = await this.getMatches(celltypes,
+      diseases,
+      tissues,
+      organisms,
+      cellTypeOperation,
+      diseaseOperation,
+      tissueOperation,
+      organismOperation,
+      query,
+      queryOperation);
+
+    const ds = await this.Experiment.find({
       where: {
         id_IN: data_ids,
       },

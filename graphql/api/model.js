@@ -107,6 +107,7 @@ const typeDefs = gql`
     celltypes: [OntoTerm] @relationship(type: "celltype", direction: OUT)
     tissues: [OntoTerm] @relationship(type: "tissue", direction: OUT)
     diseases: [OntoTerm] @relationship(type: "disease", direction: OUT)
+    parent_dataset: [Dataset] @relationship(type: "experiment", direction: IN)
   }
 
   type Dataset {
